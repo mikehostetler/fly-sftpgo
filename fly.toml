@@ -1,0 +1,59 @@
+[experimental]
+  cmd = ["sftpgo", "serve"]
+
+[build]
+  image = "drakkan/sftpgo:latest"
+
+[env]
+  # https://github.com/drakkan/sftpgo/blob/main/docs/full-configuration.md
+  SFTPGO_TELEMETRY__BIND_ADDRESS = "0.0.0.0"
+  SFTPGO_TELEMETRY__BIND_PORT = "9000"
+  SFTPGO_FTPD__BINDINGS__0__PORT = "2121"
+  SFTPGO_SFTPD__BINDINGS__0__PORT = "2222"
+
+# Optionally load a configuration file from the local filesystem.
+# See README for more details
+# [[files]]
+#   guest_path = "/var/lib/sftpgo/sftpgo-config-backup.json"
+#   local_path = "sftpgo-config-backup.json"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  [http_service.concurrency]
+    type = "requests"
+    hard_limit = 250
+    soft_limit = 200
+
+[checks]
+  [checks.healthz]
+    port = 9000
+    type = "http"
+    interval = "5s"
+    timeout = "10s"
+    grace_period = "30s"
+    method = "get"
+    path = "/healthz"
+
+# Public FTP
+[[services]]
+  protocol = "tcp"
+  internal_port = 2121
+
+  [[services.ports]]
+    port = 21
+
+# Public SFTP
+[[services]]
+  protocol = "tcp"
+  internal_port = 2222
+
+  [[services.ports]]
+    port = 22
+
+[metrics]
+  port = 9000
+  path = "/metrics"
