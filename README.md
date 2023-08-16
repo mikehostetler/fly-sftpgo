@@ -28,7 +28,7 @@ fly pg attach -a <YOUR_APP> <YOUR_PG_APP>
 
 fly secrets set \
   SFTPGO_DATA_PROVIDER__DRIVER=postgresql \
-  SFTPGO_DATA_PROVIDER__CONNECTION_STRING=postgres://test_fly_sftpgo:O52h00UeJKqGcF3@twilight-dream-6791.flycast:5432/test_fly_sftpgo?sslmode=disable
+  SFTPGO_DATA_PROVIDER__CONNECTION_STRING=<YOUR_CONNECTION_STRING>
 
 fly deploy
 ```

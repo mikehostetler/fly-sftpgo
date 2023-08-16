@@ -1,3 +1,11 @@
+# fly.toml app configuration file generated for test-fly-sftpgo on 2023-08-16T08:48:19-05:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "test-fly-sftpgo"
+primary_region = "ord"
+
 [experimental]
   cmd = ["sftpgo", "serve"]
 
@@ -5,17 +13,9 @@
   image = "drakkan/sftpgo:latest"
 
 [env]
-  # https://github.com/drakkan/sftpgo/blob/main/docs/full-configuration.md
+  SFTPGO_SFTPD__BINDINGS__0__PORT = "2222"
   SFTPGO_TELEMETRY__BIND_ADDRESS = "0.0.0.0"
   SFTPGO_TELEMETRY__BIND_PORT = "9000"
-  SFTPGO_FTPD__BINDINGS__0__PORT = "2121"
-  SFTPGO_SFTPD__BINDINGS__0__PORT = "2222"
-
-# Optionally load a configuration file from the local filesystem.
-# See README for more details
-# [[files]]
-#   guest_path = "/var/lib/sftpgo/sftpgo-config-backup.json"
-#   local_path = "sftpgo-config-backup.json"
 
 [http_service]
   internal_port = 8080
@@ -28,6 +28,20 @@
     hard_limit = 250
     soft_limit = 200
 
+[[services]]
+  protocol = "tcp"
+  internal_port = 2121
+
+  [[services.ports]]
+    port = 21
+
+[[services]]
+  protocol = "tcp"
+  internal_port = 2222
+
+  [[services.ports]]
+    port = 22
+
 [checks]
   [checks.healthz]
     port = 9000
@@ -37,22 +51,6 @@
     grace_period = "30s"
     method = "get"
     path = "/healthz"
-
-# Public FTP
-[[services]]
-  protocol = "tcp"
-  internal_port = 2121
-
-  [[services.ports]]
-    port = 21
-
-# Public SFTP
-[[services]]
-  protocol = "tcp"
-  internal_port = 2222
-
-  [[services.ports]]
-    port = 22
 
 [metrics]
   port = 9000
