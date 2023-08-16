@@ -30,8 +30,6 @@ fly secrets set \
   SFTPGO_DATA_PROVIDER__DRIVER=postgresql \
   SFTPGO_DATA_PROVIDER__CONNECTION_STRING=<YOUR_CONNECTION_STRING>
 
-fly secrets set SFTPGO_DATA_PROVIDER__DRIVER=postgresql SFTPGO_DATA_PROVIDER__CONNECTION_STRING=postgres://test_fly_sftpgo:oJVl7cRRuKsjkCV@twilight-dream-6791.flycast:5432/test_fly_sftpgo?sslmode=disable
-
 fly deploy
 ```
 
